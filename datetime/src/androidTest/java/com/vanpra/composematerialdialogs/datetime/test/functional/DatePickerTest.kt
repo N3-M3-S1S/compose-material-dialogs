@@ -10,18 +10,18 @@ import com.vanpra.composematerialdialogs.test.utils.defaultButtons
 import com.vanpra.composematerialdialogs.test.utils.extensions.assertDialogDoesNotExist
 import com.vanpra.composematerialdialogs.test.utils.extensions.onDialogDateSelector
 import com.vanpra.composematerialdialogs.test.utils.extensions.onPositiveButton
+import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.time.LocalDate
 
 @RunWith(AndroidJUnit4::class)
 class DatePickerTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val testDate = LocalDate.of(2021, 1, 1)
+    private val testDate = LocalDate(year = 2021, monthNumber = 1, dayOfMonth = 1)
 
     @Test
     fun datePickerDialogWaitForPositiveButton() {
@@ -40,7 +40,7 @@ class DatePickerTest {
         composeTestRule.onPositiveButton().performClick()
         /* Need this line or else tests don't wait for dialog to close */
         composeTestRule.assertDialogDoesNotExist()
-        assertEquals(LocalDate.of(2021, 1, 20), selectedDate)
+        assertEquals(LocalDate(year = 2021, monthNumber = 1, dayOfMonth = 20), selectedDate)
     }
 
     @Test
@@ -57,7 +57,7 @@ class DatePickerTest {
 
         composeTestRule.onDialogDateSelector(20).performClick()
         composeTestRule.waitForIdle()
-        assertEquals(LocalDate.of(2021, 1, 20), selectedDate)
+        assertEquals(LocalDate(year = 2021, monthNumber = 1, dayOfMonth = 20), selectedDate)
         selectedDate = null
         composeTestRule.onPositiveButton().performClick()
         /* Need this line or else tests don't wait for dialog to close */

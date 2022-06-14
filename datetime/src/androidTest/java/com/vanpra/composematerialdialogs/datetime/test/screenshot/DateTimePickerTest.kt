@@ -7,10 +7,10 @@ import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.test.utils.DialogWithContent
 import com.vanpra.composematerialdialogs.test.utils.extensions.onDialog
 import com.vanpra.composematerialdialogs.test.utils.extensions.setContentAndWaitForIdle
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 import org.junit.Rule
 import org.junit.Test
-import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.LocalTime
 
 class DateTimePickerTest : ScreenshotTest {
@@ -23,7 +23,7 @@ class DateTimePickerTest : ScreenshotTest {
     fun datePickerBasic() {
         composeTestRule.setContentAndWaitForIdle {
             DialogWithContent {
-                datepicker(initialDate = LocalDate.of(2021, 1, 1))
+                datepicker(initialDate = LocalDate(year = 2021, monthNumber = 1, dayOfMonth = 1))
             }
         }
         compareScreenshot(composeTestRule.onDialog())
@@ -56,7 +56,7 @@ class DateTimePickerTest : ScreenshotTest {
     fun datePickerWithCustomTitle() {
         composeTestRule.setContentAndWaitForIdle {
             DialogWithContent {
-                datepicker(title = testTitle, initialDate = LocalDate.of(2021, 7, 27))
+                datepicker(title = testTitle, initialDate = LocalDate(2021, 7, 27))
             }
         }
 
@@ -67,9 +67,13 @@ class DateTimePickerTest : ScreenshotTest {
     fun datePickerWithRestrictedDates() {
         composeTestRule.setContentAndWaitForIdle {
             DialogWithContent {
-                datepicker(title = testTitle, initialDate = LocalDate.of(2021, 7, 27), allowedDateValidator = {
-                    it.dayOfWeek != DayOfWeek.SATURDAY && it.dayOfWeek != DayOfWeek.SUNDAY
-                })
+                datepicker(
+                    title = testTitle,
+                    initialDate = LocalDate(year = 2021, monthNumber = 7, dayOfMonth = 27),
+                    allowedDateValidator = {
+                        it.dayOfWeek != DayOfWeek.SATURDAY && it.dayOfWeek != DayOfWeek.SUNDAY
+                    }
+                )
             }
         }
 

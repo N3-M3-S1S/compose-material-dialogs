@@ -1,20 +1,20 @@
 package com.vanpra.composematerialdialogs.datetime.util
 
 import androidx.compose.ui.geometry.Offset
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.LocalTime
 import java.time.Month
-import java.time.YearMonth
+import java.time.Year
 import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.sin
 
 internal fun Float.getOffset(angle: Double): Offset =
     Offset((this * cos(angle)).toFloat(), (this * sin(angle)).toFloat())
-
-internal val LocalDate.yearMonth: YearMonth
-    get() = YearMonth.of(this.year, this.month)
 
 internal val LocalTime.isAM: Boolean
     get() = this.hour in 0..11
@@ -38,3 +38,13 @@ internal fun LocalTime.toAM(): LocalTime = if (this.isAM) this else this.minusHo
 internal fun LocalTime.toPM(): LocalTime = if (!this.isAM) this else this.plusHours(12)
 
 internal fun LocalTime.noSeconds(): LocalTime = LocalTime.of(this.hour, this.minute)
+
+internal fun LocalDate.isLeapYear() = Year.isLeap(year.toLong())
+
+internal fun LocalDate.withDayOfMonth(dayOfMonth: Int) =
+    LocalDate(year = year, month = month, dayOfMonth = dayOfMonth)
+
+internal fun LocalDate.Companion.now(): LocalDate =
+    Clock.System.now().toLocalDateTime(
+        TimeZone.currentSystemDefault()
+    ).date

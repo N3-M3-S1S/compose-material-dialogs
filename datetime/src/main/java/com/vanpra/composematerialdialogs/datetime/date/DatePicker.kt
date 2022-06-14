@@ -2,7 +2,6 @@ package com.vanpra.composematerialdialogs.datetime.date
 
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -58,9 +57,12 @@ import com.google.accompanist.pager.rememberPagerState
 import com.vanpra.composematerialdialogs.MaterialDialogScope
 import com.vanpra.composematerialdialogs.datetime.util.getFullLocalName
 import com.vanpra.composematerialdialogs.datetime.util.getShortLocalName
+import com.vanpra.composematerialdialogs.datetime.util.isLeapYear
 import com.vanpra.composematerialdialogs.datetime.util.isSmallDevice
+import com.vanpra.composematerialdialogs.datetime.util.now
+import com.vanpra.composematerialdialogs.datetime.util.withDayOfMonth
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 import java.time.temporal.WeekFields
 import java.util.Locale
 
@@ -111,7 +113,7 @@ internal fun DatePickerImpl(
     locale: Locale
 ) {
     val pagerState = rememberPagerState(
-        initialPage = (state.selected.year - state.yearRange.first) * 12 + state.selected.monthValue - 1
+        initialPage = (state.selected.year - state.yearRange.first) * 12 + state.selected.monthNumber - 1
     )
 
     Column(Modifier.fillMaxWidth()) {
@@ -123,10 +125,10 @@ internal fun DatePickerImpl(
             modifier = Modifier.height(336.dp)
         ) { page ->
             val viewDate = remember {
-                LocalDate.of(
-                    state.yearRange.first + page / 12,
-                    page % 12 + 1,
-                    1
+                LocalDate(
+                    year = state.yearRange.first + page / 12,
+                    monthNumber = page % 12 + 1,
+                    dayOfMonth = 1
                 )
             }
 
@@ -151,7 +153,7 @@ internal fun DatePickerImpl(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun YearPicker(
     viewDate: LocalDate,
@@ -302,7 +304,6 @@ private fun CalendarViewHeader(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CalendarView(
     viewDate: LocalDate,
@@ -376,7 +377,6 @@ private fun DateSelectionBox(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DayOfWeekHeader(state: DatePickerState, locale: Locale) {
     val dayHeaders = WeekFields.of(locale).firstDayOfWeek.let { firstDayOfWeek ->
@@ -393,7 +393,7 @@ private fun DayOfWeekHeader(state: DatePickerState, locale: Locale) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         LazyVerticalGrid(columns = GridCells.Fixed(7)) {
-            dayHeaders.forEach { it ->
+            dayHeaders.forEach {
                 item {
                     Box(Modifier.size(40.dp)) {
                         Text(
@@ -449,7 +449,7 @@ private fun CalendarHeader(title: String, state: DatePickerState, locale: Locale
 }
 
 private fun getDates(date: LocalDate, locale: Locale): Pair<Int, Int> {
-    val numDays = date.month.length(date.isLeapYear)
+    val numDays = date.month.length(date.isLeapYear())
 
     val firstDayOfWeek = WeekFields.of(locale).firstDayOfWeek.value
     val firstDay = date.withDayOfMonth(1).dayOfWeek.value - firstDayOfWeek % 7
