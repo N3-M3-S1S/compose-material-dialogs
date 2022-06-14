@@ -23,6 +23,10 @@ object Dependencies {
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
     }
 
+    object KotlinX {
+        const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.3"
+    }
+
     object Shot {
         private const val version = "5.14.1"
         const val core = "com.karumi:shot:$version"

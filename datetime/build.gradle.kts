@@ -58,6 +58,7 @@ android {
 dependencies {
     api(project(":core"))
     implementation(Dependencies.Accompanist.pager)
+    implementation(Dependencies.KotlinX.dateTime)
     coreLibraryDesugaring(Dependencies.desugar)
 }
 
