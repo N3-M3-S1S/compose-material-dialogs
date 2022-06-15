@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -162,6 +163,13 @@ private fun YearPicker(
 ) {
     val gridState = rememberLazyGridState((viewDate.year - state.yearRange.first) / 3)
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = state.selected.year) {
+        val selectedDateYearPosition = state.yearRange.indexOf(state.selected.year)
+        if (selectedDateYearPosition != -1) {
+            gridState.scrollToItem(selectedDateYearPosition)
+        }
+    }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
