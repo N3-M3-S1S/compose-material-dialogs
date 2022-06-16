@@ -51,6 +51,8 @@ dependencies {
 //    implementation(Dependencies.ComposeMaterialDialogs.datetime)
 //    implementation(Dependencies.ComposeMaterialDialogs.color)
 
+    implementation(Dependencies.KotlinX.dateTime)
+
     implementation(Dependencies.Google.material)
     implementation(Dependencies.AndroidX.coreKtx)
 
