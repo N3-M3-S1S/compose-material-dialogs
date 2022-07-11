@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.diffplug.spotless") version "6.0.4"
-    id("org.jetbrains.dokka") version "1.6.0"
 }
 
 buildscript {
@@ -16,7 +15,6 @@ buildscript {
         classpath(Dependencies.Kotlin.gradlePlugin)
         classpath("com.android.tools.build:gradle:7.2.1")
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.19.0")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
         classpath(Dependencies.Shot.core)
     }
 }
@@ -43,9 +41,6 @@ allprojects {
     }
 }
 
-tasks.dokkaHtmlMultiModule.configure {
-    outputDirectory.set(projectDir.resolve("docs/api"))
-}
 
 subprojects {
     plugins.apply("com.diffplug.spotless")
