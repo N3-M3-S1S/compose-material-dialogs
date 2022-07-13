@@ -57,6 +57,16 @@ shot {
     tolerance = 1.0 // Tolerance needed for CI
 }
 
-mavenPublish {
-    sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.nemesis.compose-material-dialogs"
+            artifactId = "core"
+            version = "1.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

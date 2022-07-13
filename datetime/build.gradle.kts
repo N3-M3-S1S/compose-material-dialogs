@@ -21,8 +21,8 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -55,6 +55,8 @@ android {
             "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi"
         )
     }
+
+
 }
 
 dependencies {
@@ -68,6 +70,16 @@ shot {
     tolerance = 1.0 // Tolerance needed for CI
 }
 
-mavenPublish {
-    sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.nemesis.compose-material-dialogs"
+            artifactId = "datetime"
+            version = "1.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }
